@@ -28,7 +28,10 @@ if ($result->num_rows > 0) {
     // 사용자가 존재하는 경우
     $row = $result->fetch_assoc();
     if (password_verify($password, $row['password'])) {
-        echo "로그인 성공!";
+        session_start();
+        $_SESSION['username'] = $username;
+        // main.php로 이동
+        header("Location: main.php");
     } else {
         echo "비밀번호가 일치하지 않습니다.";
     }

@@ -13,6 +13,7 @@ $conn = new mysqli($servername, $username, $password, $dbname, $port);
 $username = $_POST['username'];
 $password = password_hash($_POST['password'], PASSWORD_DEFAULT); // 비밀번호 암호화
 $email = $_POST['email'];
+$gender = $_POST['gender'];
 
 
 
@@ -22,10 +23,12 @@ if ($conn->connect_error) {
 }
 
 // 사용자 등록 쿼리
-$sql = "INSERT INTO users (username, password, email) VALUES ('$username', '$password', '$email')";
+$sql = "INSERT INTO users (username, password, email, gender) VALUES ('$username', '$password', '$email', '$gender')";
 
 if ($conn->query($sql) === TRUE) {
-    echo "회원가입이 완료되었습니다.";
+    // 회원가입이 정상적으로 완료되면 로그인 페이지로 이동
+    header("Location: login.php");
+    exit();
 } else {
     echo "Error: " . $sql . "<br>" . $conn->error;
 }

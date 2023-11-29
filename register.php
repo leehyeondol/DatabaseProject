@@ -17,6 +17,12 @@
         <label for="email">이메일:</label>
         <input type="email" name="email" required><br>
 
+        <label>성별:</label>
+        <input type="radio" name="gender" value="male" required>
+        <label for="male">남성</label>
+        <input type="radio" name="gender" value="female" required>
+        <label for="female">여성</label><br>
+
         <input type="submit" value="가입하기">
     </form>
 </body>

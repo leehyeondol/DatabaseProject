@@ -29,7 +29,6 @@ if ($result->num_rows > 0) {
     $row = $result->fetch_assoc();
     if (password_verify($password, $row['password'])) {
         session_start();
-        $_SESSION['user_id'] = $user_id;
         $_SESSION['username'] = $username;
         // main.php로 이동
         header("Location: main.php");

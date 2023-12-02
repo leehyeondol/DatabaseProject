@@ -111,11 +111,26 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['like_button'])) {
         .category-btn:hover {
             background-color: #45a049;
         }
+        .like-list-btn {
+            background-color: #4CAF50;
+            color: #fff;
+            padding: 10px 20px;
+            text-decoration: none;
+            border-radius: 5px;
+            margin-right: 20px;
+            cursor: pointer;
+        }
+
+        .like-list-btn:hover {
+            background-color: #45a049;
+        }
     </style>
 </head>
 <body>
+    
     <div class="header">
-        <a class="logout-btn" href="logout.php">로그아웃</a>
+        <a class="like-list-btn" href="like_list.php">Like_List</a> <!-- like_list 버튼 추가 -->
+        <a class="logout-btn" href="logout.php">Logout</a>   
     </div>
 
     <h2>카테고리</h2>
@@ -129,7 +144,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['like_button'])) {
                 echo "</a>";
             }
             // 아무 카테고리도 선택하지 않았을 때 전체 보기 버튼
-            echo "<a class='category-btn' href='main.php'>전체 보기</a>";
+            echo "<a class='category-btn' href='main.php'> All</a>";
         } else {
             echo "등록된 카테고리가 없습니다.";
         }

@@ -24,6 +24,13 @@
         <label for="female">여성</label><br>
 
         <input type="submit" value="가입하기">
+        <button onclick="goToRegisterPage()">로그인</button>
     </form>
+    <script>
+    
+        function goToRegisterPage() {
+            window.location.href = 'login.php';
+        }
+    </script>
 </body>
 </html>

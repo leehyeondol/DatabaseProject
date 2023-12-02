@@ -21,9 +21,37 @@ if (!isset($_SESSION['username'])) {
     exit();
 }
 
-// 패션 목록 조회 쿼리
-$sql_fashion = "SELECT fashion_id, fs_info, fs_picture FROM FashionList";
+// 카테고리 조회 쿼리
+$sql_category = "SELECT category_id, gender FROM Category";
+$result_category = $conn->query($sql_category);
+
+// 선택한 카테고리에 해당하는 패션 목록 조회 쿼리
+if (isset($_GET['category_id'])) {
+    $category_id = $_GET['category_id'];
+    $sql_fashion = "SELECT fashion_id, fs_info, fs_picture FROM FashionList WHERE category_id = $category_id";
+} else {
+    // 아무 카테고리도 선택하지 않았을 때는 전체 패션 목록 조회
+    $sql_fashion = "SELECT fashion_id, fs_info, fs_picture FROM FashionList";
+}
+
 $result_fashion = $conn->query($sql_fashion);
+
+// 좋아요 버튼이 클릭된 경우
+if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['like_button'])) {
+    $fashion_id_to_like = $_POST['fashion_id_to_like'];
+
+    // Like_list에 데이터 삽입
+    $sql_insert_like = "INSERT INTO Like_list (fashion_id) VALUES ('$fashion_id_to_like')";
+    $result_insert_like = $conn->query($sql_insert_like);
+
+    if ($result_insert_like) {
+        // 삽입 성공 시 메시지 출력 또는 다른 동작 수행
+        echo "좋아요가 등록되었습니다.";
+    } else {
+        // 삽입 실패 시 메시지 출력 또는 다른 동작 수행
+        echo "좋아요 등록에 실패했습니다.";
+    }
+}
 ?>
 
 <!DOCTYPE html>
@@ -52,10 +80,7 @@ $result_fashion = $conn->query($sql_fashion);
             padding: 10px 20px;
             text-decoration: none;
             border-radius: 5px;
-        }
-
-        .logout-btn:hover {
-            background-color: #45a049;
+            margin-right: 20px;
         }
 
         .fashion-container {
@@ -69,12 +94,46 @@ $result_fashion = $conn->query($sql_fashion);
             margin: 10px;
             text-align: center;
             width: 400px; /* 설정한 폭에 따라 다음 줄로 넘어감 */
+            border: 1px solid #ddd; /* 선 추가 */
+            padding: 10px;
+        }
+
+        .category-btn {
+            background-color: #4CAF50;
+            color: #fff;
+            padding: 10px 20px;
+            text-decoration: none;
+            border-radius: 5px;
+            margin: 0 10px;
+            cursor: pointer;
+        }
+
+        .category-btn:hover {
+            background-color: #45a049;
         }
     </style>
 </head>
 <body>
     <div class="header">
         <a class="logout-btn" href="logout.php">로그아웃</a>
+    </div>
+
+    <h2>카테고리</h2>
+    <div>
+        <?php
+        // 카테고리 버튼 출력
+        if ($result_category->num_rows > 0) {
+            while ($row_category = $result_category->fetch_assoc()) {
+                echo "<a class='category-btn' href='main.php?category_id=" . $row_category['category_id'] . "'>";
+                echo $row_category['gender'];
+                echo "</a>";
+            }
+            // 아무 카테고리도 선택하지 않았을 때 전체 보기 버튼
+            echo "<a class='category-btn' href='main.php'>전체 보기</a>";
+        } else {
+            echo "등록된 카테고리가 없습니다.";
+        }
+        ?>
     </div>
 
     <h2>패션 목록</h2>
@@ -90,10 +149,17 @@ $result_fashion = $conn->query($sql_fashion);
                 echo "</a>";
                 echo "<p>패션 ID: " . $row_fashion['fashion_id'] . "</p>";
                 echo "<p>패션 정보: " . $row_fashion['fs_info'] . "</p>";
+
+                // 좋아요 버튼 추가
+                echo "<form method='post' action='main.php'>";
+                echo "<input type='hidden' name='fashion_id_to_like' value='" . $row_fashion['fashion_id'] . "'>";
+                echo "<button type='submit' name='like_button'>좋아요</button>";
+                echo "</form>";
+
                 echo "</div>";
             }
         } else {
-            echo "등록된 패션이 없습니다.";
+            echo "선택한 카테고리에 등록된 패션이 없습니다.";
         }
         ?>
     </div>

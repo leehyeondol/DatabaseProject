@@ -47,52 +47,82 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['delete_button'])) {
     <title>Like List</title>
     <style>
         body {
-            margin: 0;
-            padding: 0;
-            font-family: Arial, sans-serif;
-        }
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+}
 
-        .header {
-            background-color: #333;
-            color: #fff;
-            padding: 15px;
-            text-align: right;
-        }
+.header {
+    background-color: #333;
+    color: #fff;
+    padding: 15px;
+    text-align: right;
+}
 
-        .main-page-btn {
-            background-color: #4CAF50;
-            color: #fff;
-            padding: 10px 20px;
-            text-decoration: none;
-            border-radius: 5px;
-            margin-right: 20px;
-        }
+.main-page-btn,
+.logout-btn {
+    background-color: #4CAF50;
+    color: #fff;
+    padding: 10px 20px;
+    text-decoration: none;
+    border-radius: 5px;
+    margin-right: 20px;
+}
 
-        .logout-btn {
-            background-color: #4CAF50;
-            color: #fff;
-            padding: 10px 20px;
-            text-decoration: none;
-            border-radius: 5px;
-            margin-right: 20px;
-        }
+.main-page-btn:hover,
+.logout-btn:hover {
+    background-color: #45a049;
+}
 
-        .like-item {
-            margin: 10px;
-            text-align: center;
-            width: 400px;
-            border: 1px solid #ddd;
-            padding: 10px;
-        }
+h2 {
+    text-align: center;
+    color: #333;
+    margin-top: 20px;
+}
 
-        .delete-btn {
-            background-color: #f44336;
-            color: #fff;
-            padding: 5px 10px;
-            text-decoration: none;
-            border-radius: 3px;
-            cursor: pointer;
-        }
+.like-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    padding: 20px;
+}
+
+.like-item {
+    margin: 10px;
+    text-align: center;
+    width: 400px;
+    border: 1px solid #ddd;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease-in-out;
+}
+
+.like-item:hover {
+    transform: scale(1.05);
+}
+
+.delete-btn {
+
+    color: #;
+    padding: 8px 16px;
+    text-decoration: none;
+    border-radius: 3px;
+    cursor: pointer;
+    transition: background-color 0.3s ease-in-out;
+}
+
+.delete-btn:hover {
+    background-color: #d32f2f;
+}
+
+.no-like-msg {
+    text-align: center;
+    color: #888;
+    margin-top: 20px;
+}
+
     </style>
 </head>
 <body>
@@ -116,7 +146,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['delete_button'])) {
                 // 삭제 버튼 추가
                 echo "<form method='post' action='like_list.php'>";
                 echo "<input type='hidden' name='likelist_id_to_delete' value='" . $row_like['likelist_id'] . "'>";
-                echo "<button type='submit' name='delete_button' class='delete-btn'>삭제</button>";
+                echo "<button type='submit' name='delete_button' class='delete-btn'>delete</button>";
                 echo "</form>";
 
                 echo "</div>";
@@ -126,7 +156,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['delete_button'])) {
         }
         ?>
     </div>
-
     <!-- 데이터베이스 연결 종료 -->
     <?php
     $conn->close();

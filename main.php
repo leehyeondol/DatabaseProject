@@ -65,6 +65,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['like_button'])) {
             margin: 0;
             padding: 0;
             font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
         }
 
         .header {
@@ -74,13 +75,44 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['like_button'])) {
             text-align: right;
         }
 
-        .logout-btn {
+        .logout-btn, .like-list-btn {
             background-color: #4CAF50;
             color: #fff;
             padding: 10px 20px;
             text-decoration: none;
             border-radius: 5px;
             margin-right: 20px;
+            cursor: pointer;
+            display: inline-block;
+        }
+
+        .like-list-btn:hover {
+            background-color: #45a049;
+        }
+
+        h2 {
+            text-align: center;
+            color: #333;
+        }
+
+        .category-container {
+            text-align: center;
+            margin: 20px 0;
+        }
+
+        .category-btn {
+            background-color: #4CAF50;
+            color: #fff;
+            padding: 10px 20px;
+            text-decoration: none;
+            border-radius: 5px;
+            margin: 0 10px;
+            cursor: pointer;
+            display: inline-block;
+        }
+
+        .category-btn:hover {
+            background-color: #45a049;
         }
 
         .fashion-container {
@@ -93,48 +125,52 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['like_button'])) {
         .fashion-item {
             margin: 10px;
             text-align: center;
-            width: 400px; /* 설정한 폭에 따라 다음 줄로 넘어감 */
-            border: 1px solid #ddd; /* 선 추가 */
+            width: 400px;
+            border: 1px solid #ddd;
             padding: 10px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         }
 
-        .category-btn {
-            background-color: #4CAF50;
+        .fashion-item img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 8px;
+        }
+
+        .like-btn-container {
+            margin-top: 10px;
+        }
+
+        .like-btn {
+            background-color: #4caf50;
             color: #fff;
-            padding: 10px 20px;
-            text-decoration: none;
-            border-radius: 5px;
-            margin: 0 10px;
+            padding: 8px 16px;
             cursor: pointer;
+            border: none;
+            border-radius: 4px;
         }
 
-        .category-btn:hover {
+        .like-btn:hover {
             background-color: #45a049;
         }
-        .like-list-btn {
-            background-color: #4CAF50;
-            color: #fff;
-            padding: 10px 20px;
-            text-decoration: none;
-            border-radius: 5px;
-            margin-right: 20px;
-            cursor: pointer;
-        }
 
-        .like-list-btn:hover {
-            background-color: #45a049;
+        .no-fashion-msg {
+            text-align: center;
+            margin: 20px;
+            color: #555;
         }
     </style>
 </head>
 <body>
-    
     <div class="header">
-        <a class="like-list-btn" href="like_list.php">Like_List</a> <!-- like_list 버튼 추가 -->
-        <a class="logout-btn" href="logout.php">Logout</a>   
+        <a class="like-list-btn" href="like_list.php">Like_List</a>
+        <a class="logout-btn" href="logout.php">Logout</a>
     </div>
 
     <h2>카테고리</h2>
-    <div>
+    <div class="category-container">
         <?php
         // 카테고리 버튼 출력
         if ($result_category->num_rows > 0) {
@@ -146,7 +182,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['like_button'])) {
             // 아무 카테고리도 선택하지 않았을 때 전체 보기 버튼
             echo "<a class='category-btn' href='main.php'> All</a>";
         } else {
-            echo "등록된 카테고리가 없습니다.";
+            echo "<p class='no-fashion-msg'>등록된 카테고리가 없습니다.</p>";
         }
         ?>
     </div>
@@ -166,15 +202,17 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['like_button'])) {
                 echo "<p>패션 정보: " . $row_fashion['fs_info'] . "</p>";
 
                 // 좋아요 버튼 추가
+                echo "<div class='like-btn-container'>";
                 echo "<form method='post' action='main.php'>";
                 echo "<input type='hidden' name='fashion_id_to_like' value='" . $row_fashion['fashion_id'] . "'>";
-                echo "<button type='submit' name='like_button'>좋아요</button>";
+                echo "<button class='like-btn' type='submit' name='like_button'>좋아요</button>";
                 echo "</form>";
+                echo "</div>";
 
                 echo "</div>";
             }
         } else {
-            echo "선택한 카테고리에 등록된 패션이 없습니다.";
+            echo "<p class='no-fashion-msg'>선택한 카테고리에 등록된 패션이 없습니다.</p>";
         }
         ?>
     </div>
